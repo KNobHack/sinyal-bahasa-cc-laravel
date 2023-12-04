@@ -1,0 +1,14 @@
+{
+    "name": "API Sinyak Bahasa",
+    "version": "0.1.0",
+    "description": "Dokumentasi untuk API Sinyak Bahasa",
+    "title": "Sinyal Bahasa",
+    "url" : "https://sinyalbahasa.id",
+    "order": [
+        "Auth",
+        "Event"
+    ],
+    "template": {
+        "showRequiredLabels": true
+    }
+}
