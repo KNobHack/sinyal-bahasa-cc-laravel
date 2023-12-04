@@ -1,7 +1,5 @@
 <?php
 
-use App\Http\Controllers\API\AuthController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,8 +14,4 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-Route::post('/login', [AuthController::class, 'login'])->name('api.login');
-
-Route::middleware(['auth:api'])->group(function () {
-	Route::post('/refresh');
-});
+Route::prefix('/v0.1')->group(base_path('routes/api-v0_1.php'));
