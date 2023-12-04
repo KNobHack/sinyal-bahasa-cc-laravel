@@ -12,12 +12,16 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function login()
+    public function login(Request $request)
     {
-        $credentials = request(['email', 'password']);
+        $validated = $request->validate([
+            'username' => ['required_without:email'],
+            'email' => ['required_without:username', 'exclude_with:username'],
+            'password' => ['required'],
+        ]);
 
-        if (!$token = auth('api')->attempt($credentials)) {
-            return response()->json(['error' => 'Unauthorized'], 401);
+        if (!$token = auth('api')->attempt($validated)) {
+            return response()->json(['error' => 'Username atau password salah'], 401);
         }
 
         return $this->respondWithToken($token);
@@ -45,6 +49,10 @@ class AuthController extends Controller
         return $this->respondWithToken(auth('api')->refresh());
     }
 
+    function register()
+    {
+    }
+
     /**
      * Get the token array structure.
      *
@@ -58,6 +66,8 @@ class AuthController extends Controller
             'access_token' => $token,
             'token_type' => 'bearer',
             'expires_in' => auth('api')->factory()->getTTL() * 60,
+            'user_id' => '',
+            'username' => '',
         ]);
     }
 }
