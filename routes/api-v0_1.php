@@ -44,5 +44,32 @@ use Illuminate\Support\Facades\Route;
 Route::post('/login', [AuthController::class, 'login'])->name('api.login');
 
 Route::middleware(['auth:api'])->group(function () {
+
+	/**
+	 * @api {post} /api/v0.1/refresh Refresh Token.
+	 * @apiVersion 0.1.0
+	 * @apiName Refresh
+	 * @apiGroup Auth
+	 *
+	 * @apiSuccess {string}  access_token  Token akses.
+	 * @apiSuccess {string}  token_type    Tipe Token (Selalu Bearer).
+	 * @apiSuccess {string}  expires_in    Waktu token kadaluarsa dalam detik.
+	 * @apiSuccess {Object}  user          Informasi user yang sudah login.
+	 * @apiSuccess {Number}  user.id       ID user.
+	 * @apiSuccess {Number}  user.username Username.
+	 * @apiSuccess {Number}  user.name     Display name user.
+	 *
+	 * @apiSuccessExample Success-Response:
+	 *     HTTP/1.1 200 OK
+	 *     {
+	 *         'access_token' => eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c,
+	 *         'token_type' => 'bearer',
+	 *         'expires_in' => 5000,
+	 *         'user' => [
+	 *             'id' => 1,
+	 *             'username' => emfahmika,
+	 *             'name' => Fany Muhammad Fahmi Kamilah,
+	 *     }
+	 */
 	Route::post('/refresh');
 });
