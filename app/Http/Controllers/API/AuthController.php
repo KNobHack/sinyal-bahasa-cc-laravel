@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class AuthController extends Controller
@@ -24,7 +25,7 @@ class AuthController extends Controller
             return response()->json(['error' => 'Username atau password salah'], 401);
         }
 
-        return $this->respondWithToken($token);
+        return $this->respondWithToken(auth('api')->user(), $token);
     }
 
     /**
@@ -46,7 +47,8 @@ class AuthController extends Controller
      */
     public function refresh()
     {
-        return $this->respondWithToken(auth('api')->refresh());
+        $refresh = auth('api')->refresh();
+        return $this->respondWithToken(auth('api')->user(), $refresh);
     }
 
     function register()
@@ -60,14 +62,17 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    protected function respondWithToken($token)
+    protected function respondWithToken(User $user, $token)
     {
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
             'expires_in' => auth('api')->factory()->getTTL() * 60,
-            'user_id' => '',
-            'username' => '',
+            'user' => [
+                'id' => $user->id,
+                'username' => $user->username,
+                'name' => $user->name,
+            ]
         ]);
     }
 }
