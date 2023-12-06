@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\API;
+namespace App\Http\Controllers\API\V0_1;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
@@ -37,7 +37,7 @@ class AuthController extends Controller
     {
         auth('api')->logout();
 
-        return response()->json(['message' => 'Successfully logged out']);
+        return response()->json(['message' => 'Berhasil logout']);
     }
 
     /**
@@ -51,8 +51,35 @@ class AuthController extends Controller
         return $this->respondWithToken(auth('api')->user(), $refresh);
     }
 
-    function register()
+    function register(Request $request)
     {
+        $validated = $request->validate([
+            'name' => ['required'],
+            'username' => ['required', 'unique:users,username'],
+            // 'photo' => ['image'],
+            'email' => ['required', 'unique:users,email'],
+            'password' => ['required'],
+        ]);
+
+        // $photo_url = null;
+        // if ($request->hasFile('photo')) {
+        //     dd($request->file('photo')->store('profiles'));
+
+        //     $photo_url = '';
+        // }
+
+        $user = new User;
+        $user->name      = $validated['name'];
+        $user->username  = $validated['username'];
+        $user->photo_url = null;
+        $user->email     = $validated['email'];
+        $user->password  = $validated['password'];
+        $user->save();
+
+
+        $token = auth('api')->login($user);
+
+        return $this->respondWithToken($user, $token);
     }
 
     /**
@@ -72,6 +99,7 @@ class AuthController extends Controller
                 'id' => $user->id,
                 'username' => $user->username,
                 'name' => $user->name,
+                'photo_url' => $user->photo_url,
             ]
         ]);
     }

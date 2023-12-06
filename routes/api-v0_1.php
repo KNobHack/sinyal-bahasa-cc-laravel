@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\API\V0_1\AuthController;
 use Illuminate\Support\Facades\Route;
 
 /**
@@ -43,6 +43,8 @@ use Illuminate\Support\Facades\Route;
  */
 Route::post('/login', [AuthController::class, 'login'])->name('api.login');
 
+Route::post('/register', [AuthController::class, 'register'])->name('api.register');
+
 Route::middleware(['auth:api'])->group(function () {
 
 	/**
@@ -71,5 +73,5 @@ Route::middleware(['auth:api'])->group(function () {
 	 *             'name' => Fany Muhammad Fahmi Kamilah,
 	 *     }
 	 */
-	Route::post('/refresh');
+	Route::post('/refresh')->name('api.refresh');
 });
