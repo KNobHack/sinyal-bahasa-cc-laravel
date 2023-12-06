@@ -6,9 +6,16 @@ use Illuminate\Support\Facades\Route;
 /**
  * @apiDefine AcceptHeader
  * 
- * @apiHeader accept=application/json Harus di isi application/json (tidak boleh kosong)
- * @apiHeaderExample
+ * @apiHeader Accept=application/json Harus di isi application/json (tidak boleh kosong)
+ * @apiHeaderExample Accept
  *     Accept: application/json
+ */
+
+/**
+ * @apiDefine AuthBearerHeader
+ * @apiHeader Authorization Token , harus dengan format Bearer(spasi){token}
+ * @apiHeaderExample Authorization
+ *     Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c
  */
 
 /**
@@ -23,7 +30,7 @@ use Illuminate\Support\Facades\Route;
  * @apiSuccess {String} user.name      Display name user.
  * @apiSuccess {String} user.photo_url URL photo profile
  *
- * @apiSuccessExample Success-Response:
+ * @apiSuccessExample 200
  *     HTTP/1.1 200 OK
  *     {
  *         'access_token' => eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c,
@@ -57,7 +64,7 @@ use Illuminate\Support\Facades\Route;
  *
  * @apiError (401) message Pesan error.
  *
- * @apiErrorExample Error-Response:
+ * @apiErrorExample 401
  *     HTTP/1.1 401 Unauthorized
  *     {
  *       "message" => "Username atau Password salah"
@@ -87,7 +94,7 @@ Route::post('/login', [AuthController::class, 'login'])->name('api.login');
  * @apiSuccess (201) {String} user.name      Display name user.
  * @apiSuccess (201) {String} user.photo_url URL photo profile
  *
- * @apiSuccessExample Success-Response:
+ * @apiSuccessExample 201
  *     HTTP/1.1 201 Created
  *     {
  *         "id": 2
@@ -101,7 +108,7 @@ Route::post('/login', [AuthController::class, 'login'])->name('api.login');
  * @apiError (422) {String} message Pesan error.
  * @apiError (422) {Object} errors Pesan error per-field.
  *
- * @apiErrorExample Error-Response:
+ * @apiErrorExample 422
  *     HTTP/1.1 422 Unprocessable Content
  *     {
  *         "message": "Nama wajib diisi. (dan 2 kesalahan lainnya)",
@@ -129,6 +136,7 @@ Route::middleware(['auth:api'])->group(function () {
 	 *
 	 * @apiUse AuthWithTokenResponse
 	 * @apiUse AcceptHeader
+	 * @apiUse AuthBearerHeader
 	 */
 	Route::post('/refresh', [AuthController::class, 'refresh'])->name('api.refresh');
 
@@ -139,7 +147,7 @@ Route::middleware(['auth:api'])->group(function () {
 	 * @apiGroup Auth
 	 * 
 	 * @apiUse AcceptHeader
-	 *
+	 * @apiUse AuthBearerHeader
 	 */
 	Route::post('/logout', [AuthController::class, 'logout'])->name('api.logout');
 });
