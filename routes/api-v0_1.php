@@ -148,6 +148,13 @@ Route::middleware(['auth:api'])->group(function () {
 	 * 
 	 * @apiUse AcceptHeader
 	 * @apiUse AuthBearerHeader
+	 *
+	 * @apiSuccess (200) {String} message Pesan sukses.
+	 * @apiErrorExample 200
+	 *     HTTP/1.1 200 Unprocessable Content
+	 *     {
+	 *         "message": "Berhasil logout"
+	 *     }
 	 */
 	Route::post('/logout', [AuthController::class, 'logout'])->name('api.logout');
 });
