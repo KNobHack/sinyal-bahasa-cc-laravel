@@ -68,9 +68,10 @@ class AuthController extends Controller
         $user->password  = $validated['password'];
         $user->save();
 
+        $user = collect($user->toArray())
+            ->only('id', 'name', 'username', 'photo_url', 'email', 'created_at');
 
-
-        return response()->json($user->toArray());
+        return response()->json($user);
     }
 
     /**
@@ -86,12 +87,16 @@ class AuthController extends Controller
             'access_token' => $token,
             'token_type' => 'bearer',
             'expires_in' => auth('api')->factory()->getTTL() * 60,
-            'user' => [
-                'id' => $user->id,
-                'username' => $user->username,
-                'name' => $user->name,
-                'photo_url' => $user->photo_url,
-            ]
+            'user' => $user = collect($user->toArray())
+                ->only(
+                    'id',
+                    'name',
+                    'username',
+                    'photo_url',
+                    'email',
+                    'created_at',
+                    'updated_at'
+                )
         ]);
     }
 }
