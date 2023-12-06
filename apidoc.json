@@ -6,6 +6,7 @@
     "url" : "https://sinyalbahasa.id",
     "order": [
         "Auth",
+        "User",
         "Event"
     ],
     "template": {
