@@ -22,7 +22,7 @@ class AuthController extends Controller
         ]);
 
         if (!$token = auth('api')->attempt($validated)) {
-            return response()->json(['error' => 'Username atau password salah'], 401);
+            return response()->json(['message' => 'Username atau password salah'], 401);
         }
 
         return $this->respondWithToken(auth('api')->user(), $token);
@@ -56,17 +56,9 @@ class AuthController extends Controller
         $validated = $request->validate([
             'name' => ['required'],
             'username' => ['required', 'unique:users,username'],
-            // 'photo' => ['image'],
             'email' => ['required', 'unique:users,email'],
             'password' => ['required'],
         ]);
-
-        // $photo_url = null;
-        // if ($request->hasFile('photo')) {
-        //     dd($request->file('photo')->store('profiles'));
-
-        //     $photo_url = '';
-        // }
 
         $user = new User;
         $user->name      = $validated['name'];
@@ -77,9 +69,8 @@ class AuthController extends Controller
         $user->save();
 
 
-        $token = auth('api')->login($user);
 
-        return $this->respondWithToken($user, $token);
+        return response()->json($user->toArray());
     }
 
     /**
