@@ -18,3 +18,5 @@
     - 'asia-southeast2'
   images:
   - 'gcr.io/$PROJECT_ID/sinyal-bahasa-cc-laravel:$COMMIT_SHA'
+  options:
+  logging: CLOUD_LOGGING_ONLY
