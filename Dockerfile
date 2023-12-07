@@ -6,7 +6,7 @@ RUN mkdir -p /run/nginx
 
 COPY docker/nginx.conf /etc/nginx/nginx.conf
 
-RUN docker-php-ext-install bcmath
+RUN docker-php-ext-install bcmath mysqli pdo pdo_mysql
 
 COPY composer.json composer.json
 
