@@ -13,16 +13,17 @@ return new class extends Migration
     {
         Schema::create('events', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained();
+            $table->foreignId('host_id')->constrained('users');
 
             $table->string('name');
             $table->text('thumbnail_url')->nullable();
+            $table->text('thumbnail_path')->nullable();
             $table->text('description');
             $table->date('date');
-            $table->timestamp('start_time');
-            $table->timestamp('end_time');
-            $table->float('lat');
-            $table->float('lon');
+            $table->integer('start_time');
+            $table->integer('end_time');
+            $table->float('lat', 9, 6);
+            $table->float('lon', 9, 6);
             $table->unsignedInteger('max_participant');
 
             $table->timestamps();

@@ -71,4 +71,15 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->hasMany(Event::class);
     }
+
+    // function
+    public function isAdministrator(): bool
+    {
+        return $this->attributes['is_admin'] ?? false;
+    }
+
+    public function isNotAdministrator(): bool
+    {
+        return !$this->isAdministrator();
+    }
 }
