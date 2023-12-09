@@ -22,7 +22,7 @@ class EventController extends Controller
             $event = Event::all();
         }
 
-        return EventResource::collection($event);
+        return EventResource::collection($event->load('host', 'participants'));
     }
 
     /**
@@ -61,7 +61,7 @@ class EventController extends Controller
         $event->max_participant = $validated['max_participant'];
         $event->save();
 
-        return new EventResource($event->load('host'));
+        return new EventResource($event->load('host', 'participants'));
     }
 
     /**
@@ -69,7 +69,7 @@ class EventController extends Controller
      */
     public function show(Event $event)
     {
-        return new EventResource($event->load(['host']));
+        return new EventResource($event->load(['host', 'participants']));
     }
 
     /**
@@ -78,6 +78,28 @@ class EventController extends Controller
     public function update(Request $request, Event $event)
     {
         //
+    }
+
+    public function join(Request $request, Event $event)
+    {
+        $validated = $request->validate([
+            'user_id' => ['integer', Rule::excludeIf(auth('api')->user()?->isNotAdministrator())],
+        ]);
+
+        $event->participants()->attach($validated['user_id'] ?? auth('api')->id());
+
+        return new EventResource($event->load(['host', 'participants']));
+    }
+
+    public function disjoin(Request $request, Event $event)
+    {
+        $validated = $request->validate([
+            'user_id' => ['integer', Rule::excludeIf(auth('api')->user()?->isNotAdministrator())],
+        ]);
+
+        $event->participants()->detach($validated['user_id'] ?? auth('api')->id());
+
+        return new EventResource($event->load(['host', 'participants']));
     }
 
     /**

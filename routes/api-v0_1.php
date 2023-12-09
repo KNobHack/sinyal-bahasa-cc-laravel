@@ -162,5 +162,6 @@ Route::middleware(['auth:api'])->group(function () {
 	 */
 	Route::post('/logout', [AuthController::class, 'logout'])->name('api.logout');
 
+	Route::post('/event/{event}/join', [EventController::class, 'join']);
 	Route::apiResource('event', EventController::class);
 });

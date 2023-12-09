@@ -72,6 +72,11 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasMany(Event::class);
     }
 
+    public function participated(): Relation
+    {
+        return $this->belongsToMany(Event::class, 'event_participant');
+    }
+
     // function
     public function isAdministrator(): bool
     {
