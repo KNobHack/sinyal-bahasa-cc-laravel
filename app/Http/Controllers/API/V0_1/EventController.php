@@ -61,7 +61,7 @@ class EventController extends Controller
         $event->max_participant = $validated['max_participant'];
         $event->save();
 
-        return response()->json(new EventResource($event->load('host')));
+        return new EventResource($event->load('host'));
     }
 
     /**
@@ -69,7 +69,7 @@ class EventController extends Controller
      */
     public function show(Event $event)
     {
-        return new EventResource($event);
+        return new EventResource($event->load(['host']));
     }
 
     /**

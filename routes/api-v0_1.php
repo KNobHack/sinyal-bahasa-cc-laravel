@@ -98,12 +98,15 @@ Route::post('/login', [AuthController::class, 'login'])->name('api.login');
  * @apiSuccessExample 201
  *     HTTP/1.1 201 Created
  *     {
- *         "id": 2
- *         "name": "Fany Muhammad Fahmi Kamilah",
- *         "username": "emfahmika",
- *         "photo_url": null,
- *         "email": "fahmikamilah@gmail.com",
- *         "created_at": "2023-12-06T11:15:26.000000Z",
+ *         "user": {
+ *             "id": 1,
+ *             "name": "Fany Muhammad Fahmi Kamilah",
+ *             "username": "emfahmika3",
+ *             "photo_url": null,
+ *             "email": "fahmikamilah3@gmail.com",
+ *             "created_at": "2023-12-09T12:34:51.000000Z",
+ *             "updated_at": "2023-12-09T12:34:51.000000Z"
+ *         }
  *     }
  * 
  * @apiError (422) {String} message Pesan error.

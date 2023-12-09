@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API\V0_1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\V0_1\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -68,10 +69,9 @@ class AuthController extends Controller
         $user->password  = $validated['password'];
         $user->save();
 
-        $user = collect($user->toArray())
-            ->only('id', 'name', 'username', 'photo_url', 'email', 'created_at');
-
-        return response()->json($user);
+        $resources = new UserResource($user);
+        $resources::$wrap = 'user';
+        return $resources;
     }
 
     /**
@@ -87,16 +87,7 @@ class AuthController extends Controller
             'access_token' => $token,
             'token_type' => 'bearer',
             'expires_in' => auth('api')->factory()->getTTL() * 60,
-            'user' => $user = collect($user->toArray())
-                ->only(
-                    'id',
-                    'name',
-                    'username',
-                    'photo_url',
-                    'email',
-                    'created_at',
-                    'updated_at'
-                )
+            'user' => new UserResource($user)
         ]);
     }
 }
