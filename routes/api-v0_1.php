@@ -38,7 +38,7 @@ use Illuminate\Support\Facades\Route;
  *         "token_type" : "bearer",
  *         "expires_in" : 3600,
  *         "user" : {
- *             "id": 2
+ *             "id": 1,
  *             "name": "Fany Muhammad Fahmi Kamilah",
  *             "username": "emfahmika",
  *             "photo_url": null,
@@ -126,6 +126,7 @@ Route::post('/login', [AuthController::class, 'login'])->name('api.login');
  *              "email": [
  *                  "Surel sudah ada sebelumnya."
  *              ]
+ *         }
  *     }
  */
 Route::post('/register', [AuthController::class, 'register'])->name('api.register');
