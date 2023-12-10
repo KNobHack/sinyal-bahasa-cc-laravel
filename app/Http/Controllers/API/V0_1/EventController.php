@@ -12,6 +12,14 @@ use Illuminate\Validation\Rule;
 class EventController extends Controller
 {
     /**
+     * Create the controller instance.
+     */
+    public function __construct()
+    {
+        $this->authorizeResource(Event::class);
+    }
+
+    /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
@@ -77,7 +85,42 @@ class EventController extends Controller
      */
     public function update(Request $request, Event $event)
     {
-        //
+        $validated = $request->validate([
+            'name' => ['required'],
+            'thumbnail' => ['image'], // jpg, jpeg, png, bmp, gif, svg, or webp
+            'description' => ['required'],
+            'date' => ['required', 'date_format:Y-m-d'],
+            'start_time' => ['required', 'numeric', 'min:1', 'max:86400', 'lt:end_time'],
+            'end_time' => ['required', 'numeric', 'min:1', 'max:86400', 'gt:start_time'],
+            'lat' => ['required', 'decimal:6'],
+            'lon' => ['required', 'decimal:6'],
+            'max_participant' => ['required', 'integer'],
+
+            'host_id' => ['integer', Rule::excludeIf(auth('api')->user()?->isNotAdministrator())],
+        ]);
+
+        if ($request->hasFile('photo')) {
+            Storage::delete($event->thumbnail_path);
+
+            $file = $request->file('thumbnail')->store('event-thumbnail');
+            $url = Storage::url($file);
+
+            $event->thumbnail_url   = $url;
+            $event->thumbnail_path  = $file;
+        }
+
+        $event->name            = $validated['name'];
+        $event->host_id         = $validated['host_id'] ?? auth('api')->id();
+        $event->description     = $validated['description'];
+        $event->date            = $validated['date'];
+        $event->start_time      = $validated['start_time'];
+        $event->end_time        = $validated['end_time'];
+        $event->lat             = $validated['lat'];
+        $event->lon             = $validated['lon'];
+        $event->max_participant = $validated['max_participant'];
+        $event->save();
+
+        return new EventResource($event->load('host', 'participants'));
     }
 
     public function join(Request $request, Event $event)
@@ -86,7 +129,7 @@ class EventController extends Controller
             'user_id' => ['integer', Rule::excludeIf(auth('api')->user()?->isNotAdministrator())],
         ]);
 
-        $event->participants()->attach($validated['user_id'] ?? auth('api')->id());
+        $event->join($validated['user_id'] ?? null);
 
         return new EventResource($event->load(['host', 'participants']));
     }
@@ -97,7 +140,7 @@ class EventController extends Controller
             'user_id' => ['integer', Rule::excludeIf(auth('api')->user()?->isNotAdministrator())],
         ]);
 
-        $event->participants()->detach($validated['user_id'] ?? auth('api')->id());
+        $event->disjoin($validated['user_id'] ?? null);
 
         return new EventResource($event->load(['host', 'participants']));
     }
@@ -107,6 +150,8 @@ class EventController extends Controller
      */
     public function destroy(Event $event)
     {
-        //
+        Storage::delete($event->thumbnail_path);
+
+        $event->delete();
     }
 }
