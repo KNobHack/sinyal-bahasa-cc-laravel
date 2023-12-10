@@ -4,7 +4,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "build_doc": "apidoc -i ./routes"
+    "build_doc": "apidoc -i ./routes -o docs"
   },
   "devDependencies": {
     "apidoc": "^1.2.0",
