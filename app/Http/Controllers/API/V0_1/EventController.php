@@ -69,7 +69,10 @@ class EventController extends Controller
         $event->max_participant = $validated['max_participant'];
         $event->save();
 
-        return new EventResource($event->load('host', 'participants'));
+        return (new EventResource($event->load('host', 'participants')))
+            ->additional([
+                'message' => 'Event berhasil di buat'
+            ]);
     }
 
     /**
@@ -120,7 +123,10 @@ class EventController extends Controller
         $event->max_participant = $validated['max_participant'];
         $event->save();
 
-        return new EventResource($event->load('host', 'participants'));
+        return (new EventResource($event->load('host', 'participants')))
+            ->additional([
+                'message' => 'Event berhasil di buat'
+            ]);
     }
 
     public function join(Request $request, Event $event)
@@ -131,7 +137,10 @@ class EventController extends Controller
 
         $event->join($validated['user_id'] ?? null);
 
-        return new EventResource($event->load(['host', 'participants']));
+        return (new EventResource($event->load(['host', 'participants'])))
+            ->additional([
+                'message' => 'Berhasil join'
+            ]);
     }
 
     public function disjoin(Request $request, Event $event)
@@ -142,7 +151,10 @@ class EventController extends Controller
 
         $event->disjoin($validated['user_id'] ?? null);
 
-        return new EventResource($event->load(['host', 'participants']));
+        return (new EventResource($event->load(['host', 'participants'])))
+            ->additional([
+                'message' => 'Berhasil disjoin'
+            ]);
     }
 
     /**
@@ -153,5 +165,9 @@ class EventController extends Controller
         Storage::delete($event->thumbnail_path);
 
         $event->delete();
+
+        return response()->json([
+            'message' => 'Event berhasil di hapus'
+        ]);
     }
 }

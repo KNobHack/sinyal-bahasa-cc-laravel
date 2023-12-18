@@ -155,14 +155,124 @@ Route::middleware(['auth:api'])->group(function () {
 	 * @apiUse AuthBearerHeader
 	 *
 	 * @apiSuccess (200) {String} message Pesan sukses.
-	 * @apiErrorExample 200
-	 *     HTTP/1.1 200 Unprocessable Content
+	 * @apiSuccessExample 200
+	 *     HTTP/1.1 200 OK
 	 *     {
 	 *         "message": "Berhasil logout"
 	 *     }
 	 */
 	Route::post('/logout', [AuthController::class, 'logout'])->name('api.logout');
 
+	/**
+	 * @api {get} /api/v0.1/event Get Event.
+	 * @apiVersion 0.1.0
+	 * @apiName GetEvent
+	 * @apiGroup Event
+	 * 
+	 * @apiUse AcceptHeader
+	 * @apiUse AuthBearerHeader
+	 *
+	 * @apiSuccess (200) {String} message Pesan sukses.
+	 * @apiSuccessExample 200
+	 *     HTTP/1.1 200 OK
+	 *     {
+	 *         "message": "Berhasil logout"
+	 *     }
+	 */
+
+	/**
+	 * @apiDefine EventResponse
+	 * 
+	 * @apiSuccess (200) {String} message Pesan status.
+	 * @apiSuccess (200) {Object} data Data dari response
+	 * @apiSuccess (200) {Number} data.id Id event
+	 * @apiSuccess (200) {Object} data.host Data akun host event
+	 * @apiSuccess (200) {Number} data.host.id Id Host
+	 * @apiSuccess (200) {String} data.host.name Nama lengkap host
+	 * @apiSuccess (200) {String} data.host.username Username host
+	 * @apiSuccess (200) {String} data.host.photo_url Url photo pforile host
+	 * @apiSuccess (200) {String} data.host.email Email host
+	 * @apiSuccess (200) {String} data.host.created_at Taggal dibuat akun host (format ISO 8601)
+	 * @apiSuccess (200) {String} data.host.updated_at Taggal diedit akun host (format ISO 8601)
+	 * @apiSuccess (200) {Object[]} data.participant Data data akun participant event
+	 * @apiSuccess (200) {Number} data.participant.id Id participant
+	 * @apiSuccess (200) {String} data.participant.name Nama lengkap participant
+	 * @apiSuccess (200) {String} data.participant.username Username participant
+	 * @apiSuccess (200) {String} data.participant.photo_url Url photo pforile participant
+	 * @apiSuccess (200) {String} data.participant.email Email participant
+	 * @apiSuccess (200) {String} data.participant.created_at Taggal dibuat akun participant (format ISO 8601)
+	 * @apiSuccess (200) {String} data.participant.updated_at Taggal diedit akun participant (format ISO 8601)
+	 * @apiSuccess (200) {String} data.name Nama event
+	 * @apiSuccess (200) {String} data.thumbnail_url Url gambar thumbnail event
+	 * @apiSuccess (200) {String} data.description Deskripsi event
+	 * @apiSuccess (200) {String} data.date Tanggal event
+	 * @apiSuccess (200) {Number} data.start_time Waktu dimulai event (format detik)
+	 * @apiSuccess (200) {Number} data.end_time Waktu berakhir event (format detik)
+	 * @apiSuccess (200) {Number} data.lat Latitide event (format float)
+	 * @apiSuccess (200) {Number} data.lon Longitude event (format float)
+	 * @apiSuccess (200) {Number} data.max_participant Maksimal jumlah participant
+	 * 
+	 * @apiSuccessExample 200
+	 *     HTTP/1.1 200 OK
+	 *     {
+	 *         "message": "Success"
+	 *         "data": {
+	 *             "id": 1,
+	 *             "host": {
+	 *                 "id": 1,
+	 *                 "name": "Fany Muhammad Fahmi Kamilah",
+	 *                 "username": "emfahmika",
+	 *                 "photo_url": null,
+	 *                 "email": "fahmikamilah@gmail.com",
+	 *                 "created_at": "2023-12-09T13:16:40.000000Z",
+	 *                 "updated_at": "2023-12-09T13:16:40.000000Z"
+	 *             },
+	 *             "participant": [
+	 *                 {
+	 *                     "id": 1,
+	 *                     "name": "Fany Muhammad Fahmi Kamilah",
+	 *                     "username": "emfahmika",
+	 *                     "photo_url": null,
+	 *                     "email": "fahmikamilah@gmail.com",
+	 *                     "created_at": "2023-12-09T13:16:40.000000Z",
+	 *                     "updated_at": "2023-12-09T13:16:40.000000Z"
+	 *                 },
+	 *                 {
+	 *                     "id": 2,
+	 *                     "name": "Fany Muhammad Fahmi Kamilah",
+	 *                     "username": "emfahmika",
+	 *                     "photo_url": null,
+	 *                     "email": "fahmikamilah@gmail.com",
+	 *                     "created_at": "2023-12-09T13:16:40.000000Z",
+	 *                     "updated_at": "2023-12-09T13:16:40.000000Z"
+	 *                 }
+	 *             ],
+	 *             "name": "Event Name",
+	 *             "thumbnail_url": "http://localhost:8000/storage/event-thumbnail/GCs6O5OE6OAcTfsMECBKpZJZOk0PHfwTfk2hrJ3h.jpg",
+	 *             "description": "Event description",
+	 *             "date": "2023-12-09",
+	 *             "start_time": 21600,
+	 *             "end_time": 25200,
+	 *             "lat": -6.983162,
+	 *             "lon": 108.432557,
+	 *             "max_participant": 10
+	 *         }
+	 *     }
+	 */
+
+	/**
+	 * @api {get} /api/v0.1/event/:id Get Specific Event
+	 * @apiVersion 0.1.0
+	 * @apiName GetSpecificEvent
+	 * @apiGroup Event
+	 * 
+	 * @apiParam id Id event yang ingin di ambil
+	 *
+	 * @apiUse AcceptHeader
+	 * @apiUse AuthBearerHeader
+	 * @apiUse EventResponse
+	 *
+	 */
 	Route::post('/event/{event}/join', [EventController::class, 'join']);
 	Route::post('/event/{event}/disjoin', [EventController::class, 'disjoin']);
 	Route::apiResource('event', EventController::class);
