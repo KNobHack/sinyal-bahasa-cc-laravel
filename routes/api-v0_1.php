@@ -504,6 +504,46 @@ Route::middleware(['auth:api'])->group(function () {
      * @apiUse EventResponse
      *
      */
+
+    /**
+     * @api {post} /api/v0.1/event/:id/join Join Specific Event
+     * @apiVersion 0.1.0
+     * @apiName JoinSpecificEvent
+     * @apiGroup Event
+     * 
+     * @apiParam id Id event yang ingin di join
+     *
+     * @apiUse AcceptHeader
+     * @apiUse AuthBearerHeader
+     * @apiUse EventResponse
+     */
+
+    /**
+     * @api {post} /api/v0.1/event/:id/disjoin Disjoin Specific Event
+     * @apiVersion 0.1.0
+     * @apiName DisjoinSpecificEvent
+     * @apiGroup Event
+     * 
+     * @apiParam id Id event yang ingin di disjoin
+     *
+     * @apiUse AcceptHeader
+     * @apiUse AuthBearerHeader
+     * @apiUse EventResponse
+     */
+
+    /**
+     * @api {delete} /api/v0.1/event/:id Delete Specific Event
+     * @apiVersion 0.1.0
+     * @apiName DeleteSpecificEvent
+     * @apiGroup Event
+     * 
+     * @apiParam id Id event yang ingin di Hapus
+     *
+     * @apiUse AcceptHeader
+     * @apiUse AuthBearerHeader
+     * @apiUse EventResponse
+     */
+
     Route::post('/event/{event}/join', [EventController::class, 'join']);
     Route::post('/event/{event}/disjoin', [EventController::class, 'disjoin']);
     Route::apiResource('event', EventController::class);
