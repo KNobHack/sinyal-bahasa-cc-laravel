@@ -479,6 +479,31 @@ Route::middleware(['auth:api'])->group(function () {
      *         }
      *     }
      */
+
+    /**
+     * @api {post} /api/v0.1/event/:id Update event
+     * @apiVersion 0.1.0
+     * @apiName UpdateEvent
+     * @apiGroup Event
+     * 
+     * @apiParam id Id event yang ingin di ambil
+     * 
+     * @apiBody {String} _method Harus di isi PUT
+     * @apiBody {String} name Nama event
+     * @apiBody {Image} thumbnail Thumbnail gambar event
+     * @apiBody {String} description Desktipsi Event
+     * @apiBody {String} date Tanggal event format (YYYY-MM-DD)
+     * @apiBody {Number} start_time Waktu dimulai event (format detik)
+     * @apiBody {Number} end_time Waktu berakhir event (format detik)
+     * @apiBody {Number} lat Latitide event (format float)
+     * @apiBody {Number} lon Longitude event (format float)
+     * @apiBody {Number} max_participant Maksimal jumlah participant
+     *
+     * @apiUse AcceptHeader
+     * @apiUse AuthBearerHeader
+     * @apiUse EventResponse
+     *
+     */
     Route::post('/event/{event}/join', [EventController::class, 'join']);
     Route::post('/event/{event}/disjoin', [EventController::class, 'disjoin']);
     Route::apiResource('event', EventController::class);
