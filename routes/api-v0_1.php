@@ -358,7 +358,7 @@ Route::middleware(['auth:api'])->group(function () {
      *                 }
      *             ],
      *             "name": "Event Name",
-     *             "thumbnail_url": "http://localhost:8000/storage/event-thumbnail/GCs6O5OE6OAcTfsMECBKpZJZOk0PHfwTfk2hrJ3h.jpg",
+     *             "thumbnail_url": "https://storage.googleapis.com/sinyal-bahasa/event-thumbnail/45xy3NpUHVPR1a4EwQEeIIqDTxbLQIyOLeEGnZKo.jpg",
      *             "description": "Event description",
      *             "date": "2023-12-09",
      *             "start_time": 21600,
@@ -468,7 +468,7 @@ Route::middleware(['auth:api'])->group(function () {
      *                 }
      *             ],
      *             "name": "Event Name",
-     *             "thumbnail_url": "http://localhost:8000/storage/event-thumbnail/GCs6O5OE6OAcTfsMECBKpZJZOk0PHfwTfk2hrJ3h.jpg",
+     *             "thumbnail_url": "https://storage.googleapis.com/sinyal-bahasa/event-thumbnail/45xy3NpUHVPR1a4EwQEeIIqDTxbLQIyOLeEGnZKo.jpg",
      *             "description": "Event description",
      *             "date": "2023-12-09",
      *             "start_time": 21600,
